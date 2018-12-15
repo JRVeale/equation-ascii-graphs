@@ -24,6 +24,12 @@ def get_user_dim():
         else:
             return user_int
 
+def get_user_folder():
+    user_str = input("Enter folder for graph ")
+    raw_str = "%r"%user_str[1:len(user_str)-1]
+    print(user_str)
+    return user_str
+
 def get_user_equation():
     user_str = input("Enter an equation ")
     if user_str in [""," "]:
@@ -85,7 +91,7 @@ def get_intervals(bounds, x_dim, y_dim):
 
 def plot(equation,bounds,dimension):
     y_dim = makeEven(dimension)
-    x_dim = makeEven(math.ceil(y_dim*1.875))
+    x_dim = makeEven(math.ceil(y_dim*2))
     graph = gen_blank_array(x_dim,y_dim)
 
     #add axes lines (for each axis: check if 0 in range - put line on zero, else just edge
@@ -266,17 +272,18 @@ def graph_to_txt(graph,location,filename):
 
 def main():
     #get user input (and clean)
-    dim = get_user_dim()
     eq = get_user_equation() #can call eval(eq) for all x's needed
     print("Python equation is " + eq)
     axes_range = get_user_range()
+    dim = get_user_dim()
     print("Graph range is X from "+str(axes_range[0])+" to "+str(axes_range[1])+" and Y from "+str(axes_range[2])+" to "+str(axes_range[3]))
     #make 2d char array and fill with " " (spaces)
     ascii_graph = plot(eq,axes_range,dim)
     #replace spaces with symbols as per get_y(x) ("_-^v/\|",axes,axis lables)
     
     #turn 2d char array into text file
-    graph_to_txt(ascii_graph,r"C:\Users\James\Desktop\Tests","test")
+    folder = get_user_folder()
+    graph_to_txt(ascii_graph,folder,"test")
     return None
 
 #Allow code to run if this module is run directly, but don't run if imported...
