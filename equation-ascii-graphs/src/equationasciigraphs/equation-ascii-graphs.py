@@ -130,19 +130,19 @@ class AsciiGraph:
                 else:
                     line_pos = int((-self.ranges[0]/(2*x_int))-1)
                 graph[j][line_pos] = "|"
-                
+        '''        
         #print to check progress
         for j in range(y_dim):
             for i in range(x_dim):
                 print(graph[j][i],end="")
                 if (i == x_dim-1):
                     print()
-        
+        '''
         #use intervals to get x values to compute, then get values for y
         x_values = [float(self.ranges[0])]*(x_dim*2+1)
         for a in range(1,len(x_values)):
             x_values[a] = x_values[a-1] + x_int
-        print(x_values)
+        #print(x_values)
         y_values = [0.0]*(x_dim*2+1)
         self.aeval('x = 0')
         for b in range(len(y_values)):
@@ -153,112 +153,113 @@ class AsciiGraph:
             self.aeval(temp_eq)
             y_values[b] = float(self.aeval.symtable['temp'])
             #print(y_values[b])
-        print(y_values)
-        print()
+        #print(y_values)
+        #print()
         
         #get points (x,y) in array positions
         x_posits = [0.0]*(x_dim*2+1)
         for c in range(1,len(x_posits)):
             x_posits[c] = x_posits[c-1] + 0.5
-        print(x_posits)
+        #print(x_posits)
         y_posits = y_values
         #normalise, such that y values between 0 & 2(y_dim-1)
         y_posits[:] = [(((n-self.ranges[2])/(self.ranges[3]-self.ranges[2]))*(2*(y_dim-1))) for n in y_posits]
         #round to nearest int and then halve (cancels 2 from previous to result in rounded to nearest .5)
         y_posits[:] = [round(n)/2 for n in y_posits]
-        print(y_posits)
+        #print(y_posits)
         
         #determine chars and where they go, then add to array (over spaces)
         for n in range(len(x_posits)-2):
             if n%2 == 0: #only do these checks at the beginning of each 'square' in graph
-                print("n:",end="")
-                print(n,end=" ")
+                #print("n:",end="")
+                #print(n,end=" ")
                 if (y_posits[n] < 0 and y_posits[n+1] < 0 and y_posits[n+2] < 0) or (y_posits[n] > y_dim and y_posits[n+1] > y_dim and y_posits[n+2 > y_dim]):
-                    print("y out of range")
+                    #print("y out of range")
                     None
                     #no point to plot
                 else:
-                    print("y in range",end=" ")
+                    #print("y in range",end=" ")
                     y_place = y_dim - (int(math.floor(y_posits[n]))+1)
                     if(y_place <= 0): #prevents wraparound...
-                        print("wraparound prevented!")
+                        #print("wraparound prevented!")
                         None
                     elif(y_place > y_dim):
-                        print("overprint prevented!")
+                        #print("overprint prevented!")
                         None
                     else:
                         if(y_posits[n] == y_posits[n+1] and y_posits[n+1] == y_posits[n+2]): #_ or -
                             if((2*y_posits[n])%2 == 0): #_
-                                print("printed a '_' in x_place:",end="")
-                                print(n,end=" y_place_")
-                                print(y_place,end=" - ")
-                                print("1")
+                                #print("printed a '_' in x_place:",end="")
+                                #print(n,end=" y_place_")
+                                #print(y_place,end=" - ")
+                                #print("1")
                                 graph[y_place][int(x_posits[n])] = '_'
                             else: #-
-                                print("printed a '-' in x_place:",end="")
-                                print(n,end=" y_place_")
-                                print(y_place,end=" - ")
-                                print("2")
+                                #print("printed a '-' in x_place:",end="")
+                                #print(n,end=" y_place_")
+                                #print(y_place,end=" - ")
+                                #print("2")
                                 graph[y_place][int(x_posits[n])] = '-'
                         elif(y_posits[n] == y_posits[n+2] and (y_posits[n+1] == y_posits[n]+0.5 or y_posits[n+1] == y_posits[n]+1)): #^
-                            print("printed a '^' in x_place:",end="")
-                            print(n,end=" y_place_")
-                            print(y_place-1,end=" - ")
-                            print("3")
+                            #print("printed a '^' in x_place:",end="")
+                            #print(n,end=" y_place_")
+                            #print(y_place-1,end=" - ")
+                            #print("3")
                             graph[y_place-1][int(x_posits[n])] = '^'
                         elif(y_posits[n] == y_posits[n+2] and (y_posits[n+1] == y_posits[n]-0.5 or y_posits[n+1] == y_posits[n]-1)): #^
-                            print("printed a '^' in x_place:",end="")
-                            print(n,end=" y_place_")
-                            print(y_place,end=" - ")
-                            print("4")
+                            #print("printed a '^' in x_place:",end="")
+                            #print(n,end=" y_place_")
+                            #print(y_place,end=" - ")
+                            #print("4")
                             graph[y_place][int(x_posits[n])] = 'v'
                         elif(y_posits[n] == y_posits[n+2] - 0.5): #/
                             if((2*y_posits[n])%2 == 0): #/
-                                print("printed a '/' in x_place:",end="")
-                                print(n,end=" y_place_")
-                                print(y_place,end=" - ")
-                                print("5")
+                                #print("printed a '/' in x_place:",end="")
+                                #print(n,end=" y_place_")
+                                #print(y_place,end=" - ")
+                                #print("5")
                                 graph[y_place][int(x_posits[n])] = '/'
                             else:
-                                print("printed a '_' in x_place:",end="")
-                                print(n,end=" y_place_")
-                                print(y_place-1,end=" - ")
-                                print("6")
+                                #print("printed a '_' in x_place:",end="")
+                                #print(n,end=" y_place_")
+                                #print(y_place-1,end=" - ")
+                                #print("6")
                                 graph[y_place-1][int(x_posits[n])] = '_'
                         elif(y_posits[n] == y_posits[n+2] + 0.5): #\
                             if((2*y_posits[n])%2 == 0): #\
-                                print("printed a '\\' in x_place:",end="")
-                                print(n,end=" y_place_")
-                                print(y_place,end=" - ")
-                                print("7")
+                                #print("printed a '\\' in x_place:",end="")
+                                #print(n,end=" y_place_")
+                                #print(y_place,end=" - ")
+                                #print("7")
                                 graph[y_place][int(x_posits[n])] = '\\'
                             else:
-                                print("printed a '_' in x_place:",end="")
-                                print(n,end=" y_place_")
-                                print(y_place-1,end=" - ")
-                                print("8")
+                                #print("printed a '_' in x_place:",end="")
+                                #print(n,end=" y_place_")
+                                #print(y_place-1,end=" - ")
+                                #print("8")
                                 graph[y_place-1][int(x_posits[n])] = '_'
                         elif(y_posits[n] <= y_posits[n+2] - 0.5 or y_posits[n] >= y_posits[n+2] + 0.5): #|
                             if((2*y_posits[n])%2 == 0): #|
-                                print("printed a '|' in x_place:",end="")
-                                print(n,end=" y_place_")
-                                print(y_place,end=" - ")
-                                print("9")
+                                #print("printed a '|' in x_place:",end="")
+                                #print(n,end=" y_place_")
+                                #print(y_place,end=" - ")
+                                #print("9")
                                 graph[y_place][int(x_posits[n])] = '|'
                             else:
-                                print("printed a '|' in x_place:",end="")
-                                print(n,end=" y_place_")
-                                print(y_place-1,end=" - ")
-                                print("10")
+                                #print("printed a '|' in x_place:",end="")
+                                #print(n,end=" y_place_")
+                                #print(y_place-1,end=" - ")
+                                #print("10")
                                 graph[y_place-1][int(x_posits[n])] = '|'
                             #TODO: extend '|' vertically when needed
+        '''
         #print to check progress
         for j in range(y_dim):
             for i in range(x_dim):
                 print(graph[j][i],end="")
                 if (i == x_dim-1):
                     print()    
-        
+        '''
         #TODO: add axes labels
         return graph
     
@@ -337,16 +338,38 @@ def get_user_range():
     return user_range[0:4]
 
 def demo():
+    print("Starting Demo")
+    print("This demo is shown only when running this module directly.")
+    print("Follow the instructions to understand how to use the library.")
+    print()
+    print("Create an instance of the AsciiGraph class to generate an array of ASCII chars representing a simple equation")
+    print("a = AsciiGraph(equation,axes_range,plot_size,x_y_ratio)")
+    print("\tequation is a string representing the RHS of a y = f(x) equation, written in a format parseable by Python")
+    print("\taxes_range is a list of four numbers representing the min and max x values, and min and max y values to plot, in that order")
+    print("\tplot_size is the number of rows of characters to render in the graph - the number of columns will be set to make the graph square visually")
+    print("\tx_y_ratio is the visual ratio of characters. For a .txt file open in notepad this should be 2. This can be set to adjust the 'squareness' of the graph")
+    print("eg. a = AsciiGraph('x**3 - 10*x**2 + 5*x - 20',[-10,10,-1000,1000],30,2)")
+    print("Give inputs to see the class in action")
     eq = get_user_equation()
     print("Python equation is " + eq)
     axes_range = get_user_range()
     dim = get_user_dim()
     print("Graph range is X from "+str(axes_range[0])+" to "+str(axes_range[1])+" and Y from "+str(axes_range[2])+" to "+str(axes_range[3]))
-    
-    a = AsciiGraph(eq,axes_range,dim,2)    
-
+    print("For these inputs you would use:")
+    print("a = AsciiGraph('"+eq+"',"+str(axes_range)+","+str(dim)+",2)")
+    print("Everything is calculated on creating the instance of AsciiGraph")
+    a = AsciiGraph(eq,axes_range,dim,2)
+    print("Now that it has been created, we can call its save() method to create a .txt file")
+    print("Use a.save(folder,filename)")
     folder = get_user_folder()
-    a.save(folder,"test")
+    filename = input("Enter a filename (without the .txt extension)")
+    print("For this input you would use:")
+    print("a.save('"+folder+"','"+filename+"')")
+    a.save(folder,filename)
+    print("Calling this method has created the textfile, go find it!")
+    print()
+    print()
+    print()
     return None
 
 #Allow code to run if this module is run directly, but don't run if imported...
